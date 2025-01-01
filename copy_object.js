@@ -74,3 +74,23 @@ const original2 = {
   // Output: { name: 'Sharma', details: { age: 25, city: 'Delhi' } }
   console.log(deepCopy1);
 
+
+  // copy using lodash
+
+//   const _ = require("lodash");
+
+// const original3 = {
+//   name: "Aditya",
+//   details: {
+//     age: 25,
+//     city: "Jaipur"
+//   }
+// };
+
+// const deepCopy2 = _.cloneDeep(original3);
+
+// deepCopy2.name = "Sharma";
+
+// deepCopy2.details.city = "Delhi";
+
+// console.log(original3.name);        // Output: "Aditya" (unchanged)
