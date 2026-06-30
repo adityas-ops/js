@@ -1,8 +1,6 @@
-    // display(){
-    //     while(this.isEmpty !== true){
-    //         let test = this.Stack;
-    //         let s = this.test.peak();
-    //          this.test.pop();
-    //          console.log(s)
-    //     }
-    // }
+
+// 3 5 4 2 7 
+// 35 54 42 27
+// 354 542 427
+// 3542 5427
+// 35427
