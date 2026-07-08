@@ -1,40 +1,19 @@
 
-
-const student = {
-    name: "John",
-    age: 23,
-    isActive: true
-}
-
-// destructuring object
-const { name, age, isActive } = student;
-
-console.log(name, age, isActive); // John 23 true
-
-
-const array = [
-    {
-        name: "John",
-        age: 23,
-        isActive: true
-    },
-    {
-        name: "Jane",
-        age: 22,
-        isActive: false
+const student ={
+    name:"adi",
+    age:20,
+    address:{
+        vil:"fazilnagar"
     }
-]
+}
+console.log("student",student)
+// student = {}
+student.name = "aditya"
+console.log("student",student)
+Object.freeze(student)
+student.name = "ram"
+console.log("student",student)
 
-// destructuring array and took 2nd object
+student.address.vil = "kushinagar"
+console.log("student",student)
 
-
-
-
-// console.log(secondname, firstAge, firstIsActive); // John 23 true
-
-// benefits of destructuring
-// 1. Less code
-// 2. Easy to read
-// 3. Easy to assign variables
-// 4. Easy to swap variables
-// 5. Easy to return multiple values from a function
