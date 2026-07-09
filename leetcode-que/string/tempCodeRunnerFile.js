@@ -1,2 +1,1 @@
-  // ans+=" ";
-            // temp=''
+  console.log(mp)
