@@ -1,11 +1,25 @@
-
-
-let arr = [1,2,3,4,5,6,7,8,9]
+let arr = [1, 15, 20, 5, 2, 1, 100];
 let k = 3;
 
-
-function MaxSubArraySum(arr,k){
-
+function MaxSubArraySum(nums, k) {
+  let i = 0;
+  let j = 0;
+  let sum = 0;
+  let max = -Infinity;
+  let n = nums.length;
+  if (k > nums.length) return 0;
+  while (j < n) {
+    sum += nums[j];
+    if (j - i + 1 < k) {
+      j++;
+    } else if (j - i + 1 == k) {
+      max = Math.max(max, sum);
+      sum = sum - nums[i];
+      j++;
+      i++;
+    }
+  }
+  return max;
 }
 
-console.log(MaxSubArraySum(arr,k))
+console.log(MaxSubArraySum(arr, 3));
