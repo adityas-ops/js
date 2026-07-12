@@ -1,4 +1,4 @@
-let arr = [1, 15, 20, 5, 2, 1, 100];
+let arr = [1, 15, 20, 5, 2, 1, 100,102,204];
 let k = 3;
 
 function MaxSubArraySum(nums, k) {
@@ -12,7 +12,7 @@ function MaxSubArraySum(nums, k) {
     sum += nums[j];
     if (j - i + 1 < k) {
       j++;
-    } else if (j - i + 1 == k) {
+    } else {
       max = Math.max(max, sum);
       sum = sum - nums[i];
       j++;
