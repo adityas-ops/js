@@ -1,6 +1,15 @@
-const arr = [1, 2, 3, 4, 8, 10, 10, 12, 19];
 
-// Floor → greatest element ≤ target
+
+let arr = [4,6,10];
+let key = 4;
+
+// find the minimum absolute difference element from array 
+// 4-7 = 3, 6-7 = 1, 10-7=3
+// then answer is 6 because it 
+
+// you need to find element ceil and floor and then diff which diff is less tha's is the answer
+
+
 function findFloor(arr, target) {
   let start = 0;
   let end = arr.length - 1;
@@ -23,7 +32,6 @@ function findFloor(arr, target) {
   return res;
 }
 
-// Ceil → smallest element ≥ target
 function findCeil(arr, target) {
   let start = 0;
   let end = arr.length - 1;
@@ -46,7 +54,12 @@ function findCeil(arr, target) {
   return res;
 }
 
-console.log("floor", findFloor(arr, 5));   // 4
-console.log("floor", findFloor(arr, 0));   // -1 (no floor)
-console.log("ceil",  findCeil(arr, 5));    // 8
-console.log("ceil",  findCeil(arr, 100));  // -1 (no ceil) ✅ fixed!
+
+function findNumber(arr,key){
+ let ceil = findCeil(arr,key);
+ let floor = findFloor(arr,key)
+  return Math.min(ceil,floor)
+} 
+
+
+console.log('ans',findNumber(arr,key))
