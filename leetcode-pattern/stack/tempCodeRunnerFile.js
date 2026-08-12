@@ -1,2 +1,4 @@
-
-console.log(findMaxWaterStore([3,0,0,2,0,4]));
+st.pop()
+// st.pop()
+// st.pop()
+// st.pop()
