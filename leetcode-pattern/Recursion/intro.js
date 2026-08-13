@@ -9,3 +9,8 @@
 // 1. create recursion tree
 // 2. make input smaller 
 // 3. create coice diagram
+ 
+
+// base condition 
+// 1. smallest valid input
+// 2. smallest invalid input 
