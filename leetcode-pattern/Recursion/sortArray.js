@@ -1,21 +1,23 @@
-
-
-let arr = [5,4,3,1,2,8,9];
+let arr = [5, 4, 3, 1, 2, 8, 9];
 
 function sorting(arr) {
-    if(arr.length === 0){
-        return;
-    }
-    let poped = arr.pop()
-    console.log('pop',poped)
-    //   arr.push(poped)
-    sorting(arr)
-  
-    // sorting(arr)
+  if (arr.length == 0) return;
 
-   
+  let temp = arr.pop();
+  sorting(arr);
+  insert(arr, temp);
 }
 
-sorting(arr)
+function insert(arr, temp) {
+  if (arr.length === 0 || arr[arr.length - 1] <= temp) {  
+    arr.push(temp);
+    return;
+  }
+  let val = arr.pop();
+  insert(arr, temp);
+  arr.push(val);
+  return;
+}
 
-console.log(arr)
+sorting(arr);
+console.log(arr); // [1, 2, 3, 4, 5, 8, 9]
