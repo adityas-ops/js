@@ -1,4 +1,4 @@
-let arr = [5, 4, 3, 1, 2, 8, 9];
+let arr = [-1,-2,5, 4, 3, 1, 2, 8, 9];
 
 function sorting(arr) {
   if (arr.length == 0) return;
