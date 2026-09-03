@@ -1,22 +1,18 @@
-
-
 let str = ['a', 'd', 'i', 't', 'y', 's'];
-let out = [];
 
-solve(str, out);
-// console.log(out);
-function solve(str, out) {
-    if (str.length === 0) {
+function solve(arr, index, out) {
+    if (index === arr.length) {
         console.log([...out]);
         return;
     }
-    
-    let ch = str.shift();
-    
-    out.push(ch);           // Include
-    solve(str, out);
-    out.pop();              // Restore
-    
-    solve(str, out);        // Exclude
+
+    let ch = arr[index];
+
+    out.push(ch);
+    solve(arr, index + 1, out);  
+    out.pop();
+
+    solve(arr, index + 1, out);
 }
 
+solve(str, 0, []);
