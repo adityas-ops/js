@@ -1,10 +1,9 @@
 let str = ["a", "d", "i", "t", "y", "a"];
-let count = 0;
 
 function solve(arr, index, out) {
   if (index === arr.length) {
-    console.log([...out]);
-    count++;
+    const ss = new Set([...out])
+    console.log(ss);
     return;
   }
 
@@ -18,4 +17,3 @@ function solve(arr, index, out) {
 }
 
 solve(str, 0, []);
-console.log("c", count);
