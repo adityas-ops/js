@@ -1,0 +1,2288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>90 DSA Problems – JavaScript Solutions</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+  :root { --bg:#0d1117; --panel:#161b22; --border:#30363d; --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --green:#3fb950; --yellow:#d29922; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; display:flex; }
+  nav { width:270px; position:sticky; top:0; height:100vh; overflow-y:auto; background:var(--panel); border-right:1px solid var(--border); padding:18px 14px; flex-shrink:0; }
+  nav h2 { font-size:15px; margin:0 0 10px; color:var(--accent); }
+  nav input { width:100%; padding:8px 10px; border-radius:6px; border:1px solid var(--border); background:var(--bg); color:var(--text); margin-bottom:12px; font-size:13px; }
+  nav a { display:block; color:var(--muted); text-decoration:none; font-size:13px; padding:5px 8px; border-radius:5px; }
+  nav a:hover { background:#21262d; color:var(--text); }
+  nav .cnt { float:right; font-size:11px; color:var(--muted); }
+  main { flex:1; padding:28px 40px 80px; max-width:1100px; }
+  header h1 { font-size:30px; margin:0 0 6px; }
+  header p { color:var(--muted); margin:0 0 30px; }
+  section { margin-bottom:48px; }
+  section > h2 { font-size:22px; border-bottom:2px solid var(--border); padding-bottom:8px; margin:40px 0 20px; color:var(--accent); }
+  .problem { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:18px 22px; margin-bottom:22px; }
+  .problem h3 { margin:0 0 8px; font-size:17px; }
+  .problem .tag { display:inline-block; background:#1f6feb33; color:var(--accent); font-size:11px; padding:2px 8px; border-radius:10px; margin-left:8px; vertical-align:middle; font-weight:normal; }
+  .example { background:var(--bg); border-left:3px solid var(--yellow); padding:8px 12px; border-radius:4px; font-size:14px; color:#c9d1d9; margin:8px 0 12px; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; white-space:pre-wrap; }
+  .example b { color:var(--yellow); font-family:inherit; }
+  .approach { font-size:14px; color:var(--muted); margin:0 0 10px; }
+  .approach b { color:var(--green); }
+  .btns { display:flex; gap:8px; margin-bottom:8px; }
+  button { background:#21262d; color:var(--text); border:1px solid var(--border); padding:5px 12px; border-radius:6px; cursor:pointer; font-size:12px; }
+  button:hover { background:#30363d; border-color:#8b949e; }
+  pre { margin:0; border-radius:8px; border:1px solid var(--border); overflow:auto; max-height:640px; }
+  pre code.hljs { padding:16px 18px; font-size:13.2px; line-height:1.5; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+  .hidden { display:none; }
+  .helper { border-color:#3fb95066; }
+  footer { color:var(--muted); font-size:13px; margin-top:40px; border-top:1px solid var(--border); padding-top:16px; }
+  @media (max-width:900px){ nav{display:none;} main{padding:20px;} }
+</style>
+</head>
+<body>
+
+<nav>
+  <h2>📚 Contents</h2>
+  <input id="search" type="text" placeholder="Filter problems…">
+  <a href="#helpers">🔧 Shared Helpers</a>
+  <a href="#arrays">2. Arrays <span class="cnt">10</span></a>
+  <a href="#strings">3. Strings <span class="cnt">10</span></a>
+  <a href="#linkedlist">4. Linked Lists <span class="cnt">10</span></a>
+  <a href="#stackqueue">5. Stack &amp; Queue <span class="cnt">10</span></a>
+  <a href="#trees">6. Binary Tree / BST <span class="cnt">10</span></a>
+  <a href="#graphs">7. Graphs <span class="cnt">5</span></a>
+  <a href="#dp">8. Dynamic Programming <span class="cnt">5</span></a>
+  <a href="#sorting">9. Searching &amp; Sorting <span class="cnt">10</span></a>
+  <a href="#backtracking">10. Backtracking <span class="cnt">10</span></a>
+  <a href="#greedy">11. Greedy <span class="cnt">10</span></a>
+</nav>
+
+<main>
+<header>
+  <h1>DSA Problems to Secure a 7‑15 LPA Job</h1>
+  <p>All 90 problems from the guide with JavaScript solutions. Every snippet is runnable in a browser console or Node (paste the <em>Shared Helpers</em> first when a solution uses <code>ListNode</code>, <code>TreeNode</code> or <code>MinHeap</code>).</p>
+</header>
+
+<!-- ===================================================== HELPERS -->
+<section id="helpers">
+  <h2>🔧 Shared Helpers</h2>
+  <div class="problem helper">
+    <h3>Helper classes used across solutions <span class="tag">ListNode · TreeNode · MinHeap</span></h3>
+    <p class="approach">Linked-list, tree and priority-queue utilities referenced by later problems.</p>
+    <script type="text/plain" class="solution">
+// ---------- Linked List ----------
+class ListNode {
+  constructor(val, next = null) { this.val = val; this.next = next; }
+}
+const fromArray = arr => arr.reduceRight((next, val) => new ListNode(val, next), null);
+const toArray = head => { const out = []; while (head) { out.push(head.val); head = head.next; } return out; };
+
+// ---------- Binary Tree ----------
+class TreeNode {
+  constructor(val, left = null, right = null) { this.val = val; this.left = left; this.right = right; }
+}
+// Build from level-order array, e.g. [3,9,20,null,null,15,7]
+function buildTree(arr) {
+  if (!arr.length || arr[0] == null) return null;
+  const root = new TreeNode(arr[0]);
+  const queue = [root];
+  let i = 1;
+  while (i < arr.length) {
+    const node = queue.shift();
+    if (arr[i] != null) { node.left = new TreeNode(arr[i]); queue.push(node.left); }
+    i++;
+    if (i < arr.length && arr[i] != null) { node.right = new TreeNode(arr[i]); queue.push(node.right); }
+    i++;
+  }
+  return root;
+}
+
+// ---------- Min Heap / Priority Queue ----------
+class MinHeap {
+  constructor(cmp = (a, b) => a - b) { this.h = []; this.cmp = cmp; }
+  size() { return this.h.length; }
+  peek() { return this.h[0]; }
+  push(v) { this.h.push(v); this._up(this.h.length - 1); }
+  pop() {
+    const top = this.h[0], last = this.h.pop();
+    if (this.h.length) { this.h[0] = last; this._down(0); }
+    return top;
+  }
+  _up(i) {
+    while (i > 0) {
+      const p = (i - 1) >> 1;
+      if (this.cmp(this.h[i], this.h[p]) >= 0) break;
+      [this.h[i], this.h[p]] = [this.h[p], this.h[i]];
+      i = p;
+    }
+  }
+  _down(i) {
+    const n = this.h.length;
+    while (true) {
+      const l = 2 * i + 1, r = l + 1;
+      let m = i;
+      if (l < n && this.cmp(this.h[l], this.h[m]) < 0) m = l;
+      if (r < n && this.cmp(this.h[r], this.h[m]) < 0) m = r;
+      if (m === i) break;
+      [this.h[i], this.h[m]] = [this.h[m], this.h[i]];
+      i = m;
+    }
+  }
+}
+    </script>
+  </div>
+</section>
+
+<!-- ===================================================== ARRAYS -->
+<section id="arrays">
+  <h2>2. Array Problems</h2>
+
+  <div class="problem">
+    <h3>1. Largest Sum Contiguous Subarray (Kadane’s Algorithm)</h3>
+    <div class="example"><b>Input:</b> [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+<b>Output:</b> 6  (Subarray: [4, -1, 2, 1])</div>
+    <p class="approach"><b>Approach:</b> Keep a running sum; reset it when it becomes negative. O(n) time, O(1) space.</p>
+    <script type="text/plain" class="solution">
+function maxSubArray(nums) {
+  let best = nums[0], cur = nums[0];
+  let start = 0, tempStart = 0, end = 0;
+  for (let i = 1; i < nums.length; i++) {
+    if (cur < 0) { cur = nums[i]; tempStart = i; }
+    else cur += nums[i];
+    if (cur > best) { best = cur; start = tempStart; end = i; }
+  }
+  return { sum: best, subarray: nums.slice(start, end + 1) };
+}
+
+console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
+// { sum: 6, subarray: [4, -1, 2, 1] }
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>2. Rotate an Array by K Steps</h3>
+    <div class="example"><b>Input:</b> nums = [1,2,3,4,5,6,7], k = 3
+<b>Output:</b> [5,6,7,1,2,3,4]</div>
+    <p class="approach"><b>Approach:</b> Reverse whole array, then reverse first k and remaining n-k. O(n), in-place.</p>
+    <script type="text/plain" class="solution">
+function rotate(nums, k) {
+  const n = nums.length;
+  k %= n;
+  const reverse = (i, j) => {
+    while (i < j) {
+      [nums[i], nums[j]] = [nums[j], nums[i]];
+      i++; j--;
+    }
+  };
+  reverse(0, n - 1);
+  reverse(0, k - 1);
+  reverse(k, n - 1);
+  return nums;
+}
+
+console.log(rotate([1, 2, 3, 4, 5, 6, 7], 3)); // [5, 6, 7, 1, 2, 3, 4]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>3. Merge Intervals</h3>
+    <div class="example"><b>Input:</b> [[1,3],[2,6],[8,10],[15,18]]
+<b>Output:</b> [[1,6],[8,10],[15,18]]</div>
+    <p class="approach"><b>Approach:</b> Sort by start, then extend the last merged interval when overlapping. O(n log n).</p>
+    <script type="text/plain" class="solution">
+function mergeIntervals(intervals) {
+  if (intervals.length <= 1) return intervals;
+  intervals.sort((a, b) => a[0] - b[0]);
+  const merged = [intervals[0]];
+  for (let i = 1; i < intervals.length; i++) {
+    const last = merged[merged.length - 1];
+    const [start, end] = intervals[i];
+    if (start <= last[1]) last[1] = Math.max(last[1], end);
+    else merged.push([start, end]);
+  }
+  return merged;
+}
+
+console.log(mergeIntervals([[1, 3], [2, 6], [8, 10], [15, 18]]));
+// [[1, 6], [8, 10], [15, 18]]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>4. Find the Duplicate Number</h3>
+    <div class="example"><b>Input:</b> [1,3,4,2,2]
+<b>Output:</b> 2</div>
+    <p class="approach"><b>Approach:</b> Floyd's cycle detection treating values as "next" pointers. O(n) time, O(1) space, no modification.</p>
+    <script type="text/plain" class="solution">
+function findDuplicate(nums) {
+  let slow = nums[0], fast = nums[0];
+  do {
+    slow = nums[slow];
+    fast = nums[nums[fast]];
+  } while (slow !== fast);
+
+  slow = nums[0];
+  while (slow !== fast) {
+    slow = nums[slow];
+    fast = nums[fast];
+  }
+  return slow;
+}
+
+console.log(findDuplicate([1, 3, 4, 2, 2])); // 2
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>5. Maximum Product Subarray</h3>
+    <div class="example"><b>Input:</b> [2,3,-2,4]
+<b>Output:</b> 6</div>
+    <p class="approach"><b>Approach:</b> Track both max and min product ending at each index (a negative can flip them). O(n).</p>
+    <script type="text/plain" class="solution">
+function maxProduct(nums) {
+  let curMax = nums[0], curMin = nums[0], result = nums[0];
+  for (let i = 1; i < nums.length; i++) {
+    const n = nums[i];
+    if (n < 0) [curMax, curMin] = [curMin, curMax];
+    curMax = Math.max(n, curMax * n);
+    curMin = Math.min(n, curMin * n);
+    result = Math.max(result, curMax);
+  }
+  return result;
+}
+
+console.log(maxProduct([2, 3, -2, 4])); // 6
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>6. Find the Missing and Repeating Number</h3>
+    <div class="example"><b>Input:</b> n = 5, arr = [1, 3, 3, 5, 4]
+<b>Output:</b> Missing = 2, Repeating = 3</div>
+    <p class="approach"><b>Approach:</b> Mark seen values to find the repeat; use sum formula n(n+1)/2 to derive the missing one. O(n).</p>
+    <script type="text/plain" class="solution">
+function missingAndRepeating(arr, n) {
+  const seen = new Array(n + 1).fill(false);
+  let repeating = -1, sum = 0;
+  for (const x of arr) {
+    if (seen[x]) repeating = x;
+    seen[x] = true;
+    sum += x;
+  }
+  const expected = (n * (n + 1)) / 2;
+  const missing = expected - (sum - repeating);
+  return { missing, repeating };
+}
+
+console.log(missingAndRepeating([1, 3, 3, 5, 4], 5)); // { missing: 2, repeating: 3 }
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>7. Subarray with Given Sum</h3>
+    <div class="example"><b>Input:</b> arr = [1,2,3,7,5], sum = 12
+<b>Output:</b> [2,4]  (1-based indices)</div>
+    <p class="approach"><b>Approach:</b> Sliding window for non-negative numbers; shrink from the left while the window sum exceeds target. O(n).</p>
+    <script type="text/plain" class="solution">
+function subarrayWithSum(arr, target) {
+  let start = 0, cur = 0;
+  for (let end = 0; end < arr.length; end++) {
+    cur += arr[end];
+    while (cur > target && start < end) cur -= arr[start++];
+    if (cur === target) return [start + 1, end + 1]; // 1-based
+  }
+  return [-1];
+}
+
+console.log(subarrayWithSum([1, 2, 3, 7, 5], 12)); // [2, 4]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>8. Longest Consecutive Sequence</h3>
+    <div class="example"><b>Input:</b> [100,4,200,1,3,2]
+<b>Output:</b> 4  (1,2,3,4)</div>
+    <p class="approach"><b>Approach:</b> Put numbers in a Set; only start counting from numbers with no predecessor. O(n).</p>
+    <script type="text/plain" class="solution">
+function longestConsecutive(nums) {
+  const set = new Set(nums);
+  let longest = 0;
+  for (const n of set) {
+    if (set.has(n - 1)) continue; // not the start of a sequence
+    let cur = n, len = 1;
+    while (set.has(cur + 1)) { cur++; len++; }
+    longest = Math.max(longest, len);
+  }
+  return longest;
+}
+
+console.log(longestConsecutive([100, 4, 200, 1, 3, 2])); // 4
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>9. Trapping Rain Water</h3>
+    <div class="example"><b>Input:</b> [0,1,0,2,1,0,1,3,2,1,2,1]
+<b>Output:</b> 6</div>
+    <p class="approach"><b>Approach:</b> Two pointers with running left/right max; water at a position = min(leftMax, rightMax) - height. O(n), O(1).</p>
+    <script type="text/plain" class="solution">
+function trap(height) {
+  let l = 0, r = height.length - 1;
+  let leftMax = 0, rightMax = 0, water = 0;
+  while (l < r) {
+    if (height[l] < height[r]) {
+      leftMax = Math.max(leftMax, height[l]);
+      water += leftMax - height[l];
+      l++;
+    } else {
+      rightMax = Math.max(rightMax, height[r]);
+      water += rightMax - height[r];
+      r--;
+    }
+  }
+  return water;
+}
+
+console.log(trap([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1])); // 6
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>10. Next Permutation</h3>
+    <div class="example"><b>Input:</b> [1,2,3]
+<b>Output:</b> [1,3,2]</div>
+    <p class="approach"><b>Approach:</b> Find first decreasing element from the right (pivot), swap with next larger element to its right, then reverse the suffix. O(n).</p>
+    <script type="text/plain" class="solution">
+function nextPermutation(nums) {
+  const n = nums.length;
+  let i = n - 2;
+  while (i >= 0 && nums[i] >= nums[i + 1]) i--;
+  if (i >= 0) {
+    let j = n - 1;
+    while (nums[j] <= nums[i]) j--;
+    [nums[i], nums[j]] = [nums[j], nums[i]];
+  }
+  // reverse suffix
+  let l = i + 1, r = n - 1;
+  while (l < r) { [nums[l], nums[r]] = [nums[r], nums[l]]; l++; r--; }
+  return nums;
+}
+
+console.log(nextPermutation([1, 2, 3])); // [1, 3, 2]
+console.log(nextPermutation([3, 2, 1])); // [1, 2, 3]
+    </script>
+  </div>
+</section>
+
+<!-- ===================================================== STRINGS -->
+<section id="strings">
+  <h2>3. String Problems</h2>
+
+  <div class="problem">
+    <h3>11. Longest Palindromic Substring</h3>
+    <div class="example"><b>Input:</b> "babad"
+<b>Output:</b> "bab" or "aba"</div>
+    <p class="approach"><b>Approach:</b> Expand around every center (odd and even). O(n²) time, O(1) space.</p>
+    <script type="text/plain" class="solution">
+function longestPalindrome(s) {
+  if (s.length < 2) return s;
+  let start = 0, maxLen = 1;
+
+  const expand = (l, r) => {
+    while (l >= 0 && r < s.length && s[l] === s[r]) { l--; r++; }
+    if (r - l - 1 > maxLen) { maxLen = r - l - 1; start = l + 1; }
+  };
+
+  for (let i = 0; i < s.length; i++) {
+    expand(i, i);     // odd length
+    expand(i, i + 1); // even length
+  }
+  return s.substring(start, start + maxLen);
+}
+
+console.log(longestPalindrome("babad")); // "bab"
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>12. Reverse Words in a String</h3>
+    <div class="example"><b>Input:</b> "the sky is blue"
+<b>Output:</b> "blue is sky the"</div>
+    <script type="text/plain" class="solution">
+// One-liner
+const reverseWords = s => s.trim().split(/\s+/).reverse().join(' ');
+
+// Manual (two-pointer) version without split/reverse
+function reverseWordsManual(s) {
+  const words = [];
+  let i = 0;
+  while (i < s.length) {
+    while (i < s.length && s[i] === ' ') i++;
+    let j = i;
+    while (j < s.length && s[j] !== ' ') j++;
+    if (j > i) words.push(s.slice(i, j));
+    i = j;
+  }
+  let res = '';
+  for (let k = words.length - 1; k >= 0; k--) res += words[k] + (k ? ' ' : '');
+  return res;
+}
+
+console.log(reverseWords("the sky is blue"));       // "blue is sky the"
+console.log(reverseWordsManual("  hello   world ")); // "world hello"
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>13. Longest Common Prefix</h3>
+    <div class="example"><b>Input:</b> ["flower","flow","flight"]
+<b>Output:</b> "fl"</div>
+    <script type="text/plain" class="solution">
+function longestCommonPrefix(strs) {
+  if (!strs.length) return '';
+  let prefix = strs[0];
+  for (let i = 1; i < strs.length; i++) {
+    while (!strs[i].startsWith(prefix)) {
+      prefix = prefix.slice(0, -1);
+      if (!prefix) return '';
+    }
+  }
+  return prefix;
+}
+
+console.log(longestCommonPrefix(["flower", "flow", "flight"])); // "fl"
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>14. Group Anagrams</h3>
+    <div class="example"><b>Input:</b> ["eat","tea","tan","ate","nat","bat"]
+<b>Output:</b> [["bat"],["nat","tan"],["ate","eat","tea"]]</div>
+    <p class="approach"><b>Approach:</b> Use the sorted string (or a 26-letter count) as a hash key. O(n·k log k).</p>
+    <script type="text/plain" class="solution">
+function groupAnagrams(strs) {
+  const map = new Map();
+  for (const s of strs) {
+    const key = s.split('').sort().join('');
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(s);
+  }
+  return [...map.values()];
+}
+
+console.log(groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]));
+// [["eat","tea","ate"],["tan","nat"],["bat"]]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>15. Check for Valid Parentheses</h3>
+    <div class="example"><b>Input:</b> "()[]{}"
+<b>Output:</b> true</div>
+    <script type="text/plain" class="solution">
+function isValid(s) {
+  const stack = [];
+  const pairs = { ')': '(', ']': '[', '}': '{' };
+  for (const ch of s) {
+    if (ch === '(' || ch === '[' || ch === '{') stack.push(ch);
+    else if (stack.pop() !== pairs[ch]) return false;
+  }
+  return stack.length === 0;
+}
+
+console.log(isValid("()[]{}")); // true
+console.log(isValid("(]"));     // false
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>16. Implement ATOI</h3>
+    <div class="example"><b>Input:</b> "42"
+<b>Output:</b> 42</div>
+    <p class="approach"><b>Approach:</b> Skip whitespace, read sign, accumulate digits, clamp to 32-bit signed integer range.</p>
+    <script type="text/plain" class="solution">
+function myAtoi(s) {
+  const INT_MAX = 2 ** 31 - 1, INT_MIN = -(2 ** 31);
+  let i = 0, sign = 1, result = 0;
+
+  while (i < s.length && s[i] === ' ') i++;
+  if (s[i] === '+' || s[i] === '-') sign = s[i++] === '-' ? -1 : 1;
+
+  while (i < s.length && s[i] >= '0' && s[i] <= '9') {
+    result = result * 10 + (s.charCodeAt(i) - 48);
+    if (sign * result > INT_MAX) return INT_MAX;
+    if (sign * result < INT_MIN) return INT_MIN;
+    i++;
+  }
+  return sign * result;
+}
+
+console.log(myAtoi("42"));            // 42
+console.log(myAtoi("   -42abc"));     // -42
+console.log(myAtoi("91283472332"));   // 2147483647
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>17. String to Integer Conversion</h3>
+    <div class="example"><b>Input:</b> "-123"
+<b>Output:</b> -123</div>
+    <p class="approach"><b>Approach:</b> Strict conversion — handles optional sign, returns NaN for any invalid character.</p>
+    <script type="text/plain" class="solution">
+function stringToInt(str) {
+  if (typeof str !== 'string' || str.length === 0) return NaN;
+  let i = 0, sign = 1, num = 0;
+  if (str[0] === '-' || str[0] === '+') { sign = str[0] === '-' ? -1 : 1; i = 1; }
+  if (i === str.length) return NaN;
+  for (; i < str.length; i++) {
+    const code = str.charCodeAt(i) - 48;
+    if (code < 0 || code > 9) return NaN; // invalid character
+    num = num * 10 + code;
+  }
+  return sign * num;
+}
+
+console.log(stringToInt("-123")); // -123
+console.log(stringToInt("+77"));  // 77
+console.log(stringToInt("12a"));  // NaN
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>18. Longest Repeating Subsequence</h3>
+    <div class="example"><b>Input:</b> "AABEBCDD"
+<b>Output:</b> "ABD"</div>
+    <p class="approach"><b>Approach:</b> LCS of the string with itself where matching indices must differ (i ≠ j). O(n²).</p>
+    <script type="text/plain" class="solution">
+function longestRepeatingSubsequence(s) {
+  const n = s.length;
+  const dp = Array.from({ length: n + 1 }, () => new Array(n + 1).fill(0));
+
+  for (let i = 1; i <= n; i++)
+    for (let j = 1; j <= n; j++)
+      dp[i][j] = (s[i - 1] === s[j - 1] && i !== j)
+        ? dp[i - 1][j - 1] + 1
+        : Math.max(dp[i - 1][j], dp[i][j - 1]);
+
+  // reconstruct the subsequence
+  let i = n, j = n, res = '';
+  while (i > 0 && j > 0) {
+    if (s[i - 1] === s[j - 1] && i !== j) { res = s[i - 1] + res; i--; j--; }
+    else if (dp[i - 1][j] >= dp[i][j - 1]) i--;
+    else j--;
+  }
+  return { length: dp[n][n], subsequence: res };
+}
+
+console.log(longestRepeatingSubsequence("AABEBCDD")); // { length: 3, subsequence: 'ABD' }
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>19. KMP Algorithm for Pattern Searching</h3>
+    <div class="example"><b>Text:</b> "abxabcabcaby", <b>Pattern:</b> "abcaby"
+<b>Output:</b> 6</div>
+    <p class="approach"><b>Approach:</b> Precompute LPS (longest proper prefix that is also a suffix) to skip re-comparisons. O(n + m).</p>
+    <script type="text/plain" class="solution">
+function buildLPS(pattern) {
+  const lps = new Array(pattern.length).fill(0);
+  let len = 0, i = 1;
+  while (i < pattern.length) {
+    if (pattern[i] === pattern[len]) lps[i++] = ++len;
+    else if (len > 0) len = lps[len - 1];
+    else lps[i++] = 0;
+  }
+  return lps;
+}
+
+function kmpSearch(text, pattern) {
+  const lps = buildLPS(pattern);
+  const matches = [];
+  let i = 0, j = 0;
+  while (i < text.length) {
+    if (text[i] === pattern[j]) {
+      i++; j++;
+      if (j === pattern.length) { matches.push(i - j); j = lps[j - 1]; }
+    } else if (j > 0) j = lps[j - 1];
+    else i++;
+  }
+  return matches;
+}
+
+console.log(kmpSearch("abxabcabcaby", "abcaby")); // [6]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>20. Minimum Window Substring</h3>
+    <div class="example"><b>Input:</b> s = "ADOBECODEBANC", t = "ABC"
+<b>Output:</b> "BANC"</div>
+    <p class="approach"><b>Approach:</b> Sliding window with a need-count map; expand right until all chars satisfied, then shrink left. O(n).</p>
+    <script type="text/plain" class="solution">
+function minWindow(s, t) {
+  const need = new Map();
+  for (const c of t) need.set(c, (need.get(c) || 0) + 1);
+
+  let required = need.size, formed = 0;
+  const window = new Map();
+  let l = 0, best = [Infinity, 0, 0];
+
+  for (let r = 0; r < s.length; r++) {
+    const c = s[r];
+    window.set(c, (window.get(c) || 0) + 1);
+    if (need.has(c) && window.get(c) === need.get(c)) formed++;
+
+    while (formed === required) {
+      if (r - l + 1 < best[0]) best = [r - l + 1, l, r];
+      const lc = s[l];
+      window.set(lc, window.get(lc) - 1);
+      if (need.has(lc) && window.get(lc) < need.get(lc)) formed--;
+      l++;
+    }
+  }
+  return best[0] === Infinity ? '' : s.slice(best[1], best[2] + 1);
+}
+
+console.log(minWindow("ADOBECODEBANC", "ABC")); // "BANC"
+    </script>
+  </div>
+</section>
+
+<!-- ===================================================== LINKED LISTS -->
+<section id="linkedlist">
+  <h2>4. Linked List Problems <span class="tag">uses ListNode / fromArray / toArray helpers</span></h2>
+
+  <div class="problem">
+    <h3>21. Reverse a Linked List</h3>
+    <div class="example"><b>Input:</b> 1 -> 2 -> 3 -> 4 -> 5
+<b>Output:</b> 5 -> 4 -> 3 -> 2 -> 1</div>
+    <script type="text/plain" class="solution">
+function reverseList(head) {
+  let prev = null, cur = head;
+  while (cur) {
+    const next = cur.next;
+    cur.next = prev;
+    prev = cur;
+    cur = next;
+  }
+  return prev;
+}
+
+// Recursive version
+function reverseListRecursive(head) {
+  if (!head || !head.next) return head;
+  const newHead = reverseListRecursive(head.next);
+  head.next.next = head;
+  head.next = null;
+  return newHead;
+}
+
+console.log(toArray(reverseList(fromArray([1, 2, 3, 4, 5])))); // [5, 4, 3, 2, 1]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>22. Detect and Remove a Loop in a Linked List</h3>
+    <div class="example"><b>Input:</b> Linked List with a loop
+<b>Output:</b> Loop removed</div>
+    <p class="approach"><b>Approach:</b> Floyd's tortoise-and-hare: detect meeting point, then move one pointer to head; they meet at loop start. Break the link of the node before it.</p>
+    <script type="text/plain" class="solution">
+function detectAndRemoveLoop(head) {
+  let slow = head, fast = head;
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow === fast) break;
+  }
+  if (!fast || !fast.next) return false; // no loop
+
+  slow = head;
+  if (slow === fast) {
+    // loop starts at head: find last node
+    while (fast.next !== slow) fast = fast.next;
+  } else {
+    while (slow.next !== fast.next) { slow = slow.next; fast = fast.next; }
+  }
+  fast.next = null; // remove loop
+  return true;
+}
+
+// Demo: 1->2->3->4->5 with 5 -> 3 loop
+const head = fromArray([1, 2, 3, 4, 5]);
+head.next.next.next.next.next = head.next.next;
+console.log(detectAndRemoveLoop(head)); // true
+console.log(toArray(head));             // [1, 2, 3, 4, 5]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>23. Merge Two Sorted Linked Lists</h3>
+    <div class="example"><b>Input:</b> 1 -> 2 -> 4, 1 -> 3 -> 4
+<b>Output:</b> 1 -> 1 -> 2 -> 3 -> 4 -> 4</div>
+    <script type="text/plain" class="solution">
+function mergeTwoLists(l1, l2) {
+  const dummy = new ListNode(0);
+  let tail = dummy;
+  while (l1 && l2) {
+    if (l1.val <= l2.val) { tail.next = l1; l1 = l1.next; }
+    else { tail.next = l2; l2 = l2.next; }
+    tail = tail.next;
+  }
+  tail.next = l1 || l2;
+  return dummy.next;
+}
+
+console.log(toArray(mergeTwoLists(fromArray([1, 2, 4]), fromArray([1, 3, 4]))));
+// [1, 1, 2, 3, 4, 4]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>24. Flatten a Multilevel Doubly Linked List</h3>
+    <div class="example"><b>Input:</b> Nested Linked List
+<b>Output:</b> Single Flattened List</div>
+    <p class="approach"><b>Approach:</b> Iterative DFS with a stack: push next, then child, so child is processed first. O(n).</p>
+    <script type="text/plain" class="solution">
+class DNode {
+  constructor(val) { this.val = val; this.prev = null; this.next = null; this.child = null; }
+}
+
+function flatten(head) {
+  if (!head) return head;
+  const stack = [head];
+  let prev = null;
+  while (stack.length) {
+    const cur = stack.pop();
+    if (prev) { prev.next = cur; cur.prev = prev; }
+    if (cur.next) stack.push(cur.next);
+    if (cur.child) { stack.push(cur.child); cur.child = null; }
+    prev = cur;
+  }
+  return head;
+}
+
+// Demo:
+// 1 - 2 - 3 - 4 - 5 - 6
+//         |
+//         7 - 8 - 9 - 10
+//             |
+//             11 - 12
+const mk = arr => { let h = null, p = null; for (const v of arr) { const n = new DNode(v); if (!h) h = n; else { p.next = n; n.prev = p; } p = n; } return h; };
+const L1 = mk([1, 2, 3, 4, 5, 6]);
+const L2 = mk([7, 8, 9, 10]);
+const L3 = mk([11, 12]);
+L1.next.next.child = L2;
+L2.next.child = L3;
+console.log(toArray(flatten(L1))); // [1,2,3,7,8,11,12,9,10,4,5,6]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>25. Find the Intersection Point of Two Linked Lists</h3>
+    <div class="example"><b>Input:</b> A: 4 -> 1 -> 8 -> 4 -> 5, B: 5 -> 0 -> 1 -> 8 -> 4 -> 5
+<b>Output:</b> 8</div>
+    <p class="approach"><b>Approach:</b> Two pointers; when one reaches the end, redirect it to the other list's head. Both travel lenA + lenB and meet at the intersection. O(n+m), O(1).</p>
+    <script type="text/plain" class="solution">
+function getIntersectionNode(headA, headB) {
+  if (!headA || !headB) return null;
+  let a = headA, b = headB;
+  while (a !== b) {
+    a = a ? a.next : headB;
+    b = b ? b.next : headA;
+  }
+  return a; // null if no intersection
+}
+
+// Demo (shared tail 8 -> 4 -> 5)
+const shared = fromArray([8, 4, 5]);
+const A = new ListNode(4, new ListNode(1, shared));
+const B = new ListNode(5, new ListNode(0, new ListNode(1, shared)));
+console.log(getIntersectionNode(A, B).val); // 8
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>26. Remove N-th Node from the End of the List</h3>
+    <div class="example"><b>Input:</b> 1 -> 2 -> 3 -> 4 -> 5, n = 2
+<b>Output:</b> 1 -> 2 -> 3 -> 5</div>
+    <p class="approach"><b>Approach:</b> Move fast pointer n+1 steps ahead, then move both until fast hits null. One pass.</p>
+    <script type="text/plain" class="solution">
+function removeNthFromEnd(head, n) {
+  const dummy = new ListNode(0, head);
+  let fast = dummy, slow = dummy;
+  for (let i = 0; i <= n; i++) fast = fast.next;
+  while (fast) { fast = fast.next; slow = slow.next; }
+  slow.next = slow.next.next;
+  return dummy.next;
+}
+
+console.log(toArray(removeNthFromEnd(fromArray([1, 2, 3, 4, 5]), 2))); // [1, 2, 3, 5]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>27. Add Two Numbers Represented by Linked Lists</h3>
+    <div class="example"><b>Input:</b> 7 -> 5 -> 9, 8 -> 4   (digits stored in reverse: 957 + 48)
+<b>Output:</b> 5 -> 0 -> 0 -> 1   (= 1005)</div>
+    <script type="text/plain" class="solution">
+function addTwoNumbers(l1, l2) {
+  const dummy = new ListNode(0);
+  let tail = dummy, carry = 0;
+  while (l1 || l2 || carry) {
+    const sum = (l1 ? l1.val : 0) + (l2 ? l2.val : 0) + carry;
+    carry = Math.floor(sum / 10);
+    tail.next = new ListNode(sum % 10);
+    tail = tail.next;
+    if (l1) l1 = l1.next;
+    if (l2) l2 = l2.next;
+  }
+  return dummy.next;
+}
+
+console.log(toArray(addTwoNumbers(fromArray([7, 5, 9]), fromArray([8, 4])))); // [5, 0, 0, 1]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>28. Clone a Linked List with Random Pointers</h3>
+    <div class="example"><b>Input:</b> Original List with random pointers
+<b>Output:</b> Cloned List</div>
+    <p class="approach"><b>Approach:</b> Map original → copy, then wire next/random via the map. O(n) time & space. (An O(1)-space interleaving trick also exists.)</p>
+    <script type="text/plain" class="solution">
+class RandomNode {
+  constructor(val) { this.val = val; this.next = null; this.random = null; }
+}
+
+function cloneRandomList(head) {
+  if (!head) return null;
+  const map = new Map();
+  for (let cur = head; cur; cur = cur.next) map.set(cur, new RandomNode(cur.val));
+  for (let cur = head; cur; cur = cur.next) {
+    const copy = map.get(cur);
+    copy.next = map.get(cur.next) || null;
+    copy.random = map.get(cur.random) || null;
+  }
+  return map.get(head);
+}
+
+// Demo
+const n1 = new RandomNode(1), n2 = new RandomNode(2), n3 = new RandomNode(3);
+n1.next = n2; n2.next = n3;
+n1.random = n3; n2.random = n1; n3.random = n3;
+const c = cloneRandomList(n1);
+console.log(c.val, c.random.val, c.next.random.val, c !== n1); // 1 3 1 true
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>29. Sort a Linked List</h3>
+    <div class="example"><b>Input:</b> 4 -> 2 -> 1 -> 3
+<b>Output:</b> 1 -> 2 -> 3 -> 4</div>
+    <p class="approach"><b>Approach:</b> Merge sort — split with slow/fast pointers, sort halves, merge. O(n log n).</p>
+    <script type="text/plain" class="solution">
+function sortList(head) {
+  if (!head || !head.next) return head;
+  // split
+  let slow = head, fast = head.next;
+  while (fast && fast.next) { slow = slow.next; fast = fast.next.next; }
+  const right = slow.next;
+  slow.next = null;
+  return merge(sortList(head), sortList(right));
+}
+
+function merge(a, b) {
+  const dummy = new ListNode(0);
+  let t = dummy;
+  while (a && b) {
+    if (a.val <= b.val) { t.next = a; a = a.next; }
+    else { t.next = b; b = b.next; }
+    t = t.next;
+  }
+  t.next = a || b;
+  return dummy.next;
+}
+
+console.log(toArray(sortList(fromArray([4, 2, 1, 3])))); // [1, 2, 3, 4]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>30. Check if a Linked List is Palindrome</h3>
+    <div class="example"><b>Input:</b> 1 -> 2 -> 2 -> 1
+<b>Output:</b> true</div>
+    <p class="approach"><b>Approach:</b> Find middle, reverse the second half, compare, (optionally restore). O(n), O(1).</p>
+    <script type="text/plain" class="solution">
+function isPalindrome(head) {
+  let slow = head, fast = head;
+  while (fast && fast.next) { slow = slow.next; fast = fast.next.next; }
+
+  // reverse second half
+  let prev = null;
+  while (slow) { const nx = slow.next; slow.next = prev; prev = slow; slow = nx; }
+
+  let left = head, right = prev;
+  while (right) {
+    if (left.val !== right.val) return false;
+    left = left.next; right = right.next;
+  }
+  return true;
+}
+
+console.log(isPalindrome(fromArray([1, 2, 2, 1]))); // true
+console.log(isPalindrome(fromArray([1, 2, 3])));    // false
+    </script>
+  </div>
+</section>
+
+<!-- ===================================================== STACK & QUEUE -->
+<section id="stackqueue">
+  <h2>5. Stack and Queue Problems</h2>
+
+  <div class="problem">
+    <h3>31. Implement Stack Using Queues</h3>
+    <div class="example"><b>Operations:</b> Push, Pop, Top
+<b>Output:</b> Mimic Stack behavior</div>
+    <p class="approach"><b>Approach:</b> Single queue; after each push, rotate the queue so the new element is at the front. Push O(n), pop/top O(1).</p>
+    <script type="text/plain" class="solution">
+class StackUsingQueue {
+  constructor() { this.q = []; }
+  push(x) {
+    this.q.push(x);
+    // rotate so the newest element is at the front
+    for (let i = 0; i < this.q.length - 1; i++) this.q.push(this.q.shift());
+  }
+  pop() { return this.q.shift(); }
+  top() { return this.q[0]; }
+  empty() { return this.q.length === 0; }
+}
+
+const st = new StackUsingQueue();
+st.push(1); st.push(2); st.push(3);
+console.log(st.top());  // 3
+console.log(st.pop());  // 3
+console.log(st.pop());  // 2
+console.log(st.empty()); // false
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>32. Implement Queue Using Stacks</h3>
+    <div class="example"><b>Operations:</b> Enqueue, Dequeue
+<b>Output:</b> Mimic Queue behavior</div>
+    <p class="approach"><b>Approach:</b> Two stacks (in/out). Move elements from in → out only when out is empty. Amortized O(1).</p>
+    <script type="text/plain" class="solution">
+class QueueUsingStacks {
+  constructor() { this.inStack = []; this.outStack = []; }
+  enqueue(x) { this.inStack.push(x); }
+  _shift() {
+    if (!this.outStack.length)
+      while (this.inStack.length) this.outStack.push(this.inStack.pop());
+  }
+  dequeue() { this._shift(); return this.outStack.pop(); }
+  peek() { this._shift(); return this.outStack[this.outStack.length - 1]; }
+  empty() { return !this.inStack.length && !this.outStack.length; }
+}
+
+const q = new QueueUsingStacks();
+q.enqueue(1); q.enqueue(2); q.enqueue(3);
+console.log(q.dequeue()); // 1
+console.log(q.peek());    // 2
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>33. Next Greater Element</h3>
+    <div class="example"><b>Input:</b> [4,5,2,25]
+<b>Output:</b> [5,25,25,-1]</div>
+    <p class="approach"><b>Approach:</b> Monotonic decreasing stack, iterate from right. O(n).</p>
+    <script type="text/plain" class="solution">
+function nextGreaterElement(arr) {
+  const res = new Array(arr.length).fill(-1);
+  const stack = [];
+  for (let i = arr.length - 1; i >= 0; i--) {
+    while (stack.length && stack[stack.length - 1] <= arr[i]) stack.pop();
+    if (stack.length) res[i] = stack[stack.length - 1];
+    stack.push(arr[i]);
+  }
+  return res;
+}
+
+console.log(nextGreaterElement([4, 5, 2, 25])); // [5, 25, 25, -1]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>34. LRU Cache Implementation</h3>
+    <div class="example"><b>Operations:</b> Set, Get
+<b>Output:</b> Cache results</div>
+    <p class="approach"><b>Approach:</b> JS <code>Map</code> preserves insertion order — delete & re-insert on access to mark as recently used. O(1) per op.</p>
+    <script type="text/plain" class="solution">
+class LRUCache {
+  constructor(capacity) { this.cap = capacity; this.map = new Map(); }
+
+  get(key) {
+    if (!this.map.has(key)) return -1;
+    const val = this.map.get(key);
+    this.map.delete(key);
+    this.map.set(key, val); // move to most-recent
+    return val;
+  }
+
+  set(key, value) {
+    if (this.map.has(key)) this.map.delete(key);
+    else if (this.map.size >= this.cap) {
+      const oldest = this.map.keys().next().value; // least recently used
+      this.map.delete(oldest);
+    }
+    this.map.set(key, value);
+  }
+}
+
+const cache = new LRUCache(2);
+cache.set(1, 1); cache.set(2, 2);
+console.log(cache.get(1)); // 1
+cache.set(3, 3);           // evicts key 2
+console.log(cache.get(2)); // -1
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>35. Min Stack</h3>
+    <div class="example"><b>Operations:</b> Push, Pop, Top, GetMin
+<b>Output:</b> Min value of stack</div>
+    <p class="approach"><b>Approach:</b> Auxiliary stack storing the running minimum. All operations O(1).</p>
+    <script type="text/plain" class="solution">
+class MinStack {
+  constructor() { this.stack = []; this.mins = []; }
+  push(x) {
+    this.stack.push(x);
+    const curMin = this.mins.length ? this.mins[this.mins.length - 1] : Infinity;
+    this.mins.push(Math.min(x, curMin));
+  }
+  pop() { this.mins.pop(); return this.stack.pop(); }
+  top() { return this.stack[this.stack.length - 1]; }
+  getMin() { return this.mins[this.mins.length - 1]; }
+}
+
+const ms = new MinStack();
+ms.push(-2); ms.push(0); ms.push(-3);
+console.log(ms.getMin()); // -3
+ms.pop();
+console.log(ms.top());    // 0
+console.log(ms.getMin()); // -2
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>36. Evaluate Reverse Polish Notation</h3>
+    <div class="example"><b>Input:</b> ["2","1","+","3","*"]
+<b>Output:</b> 9</div>
+    <script type="text/plain" class="solution">
+function evalRPN(tokens) {
+  const stack = [];
+  const ops = {
+    '+': (a, b) => a + b,
+    '-': (a, b) => a - b,
+    '*': (a, b) => a * b,
+    '/': (a, b) => Math.trunc(a / b),
+  };
+  for (const t of tokens) {
+    if (t in ops) {
+      const b = stack.pop(), a = stack.pop();
+      stack.push(ops[t](a, b));
+    } else stack.push(Number(t));
+  }
+  return stack[0];
+}
+
+console.log(evalRPN(["2", "1", "+", "3", "*"])); // 9
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>37. Circular Queue Implementation</h3>
+    <div class="example"><b>Operations:</b> Enqueue/Dequeue on a fixed-size ring buffer
+<b>Output:</b> Maintain FIFO order</div>
+    <script type="text/plain" class="solution">
+class CircularQueue {
+  constructor(k) { this.data = new Array(k); this.cap = k; this.head = 0; this.size = 0; }
+  enqueue(x) {
+    if (this.isFull()) return false;
+    this.data[(this.head + this.size) % this.cap] = x;
+    this.size++;
+    return true;
+  }
+  dequeue() {
+    if (this.isEmpty()) return false;
+    this.head = (this.head + 1) % this.cap;
+    this.size--;
+    return true;
+  }
+  front() { return this.isEmpty() ? -1 : this.data[this.head]; }
+  rear() { return this.isEmpty() ? -1 : this.data[(this.head + this.size - 1) % this.cap]; }
+  isEmpty() { return this.size === 0; }
+  isFull() { return this.size === this.cap; }
+}
+
+const cq = new CircularQueue(3);
+console.log(cq.enqueue(1), cq.enqueue(2), cq.enqueue(3), cq.enqueue(4)); // true true true false
+console.log(cq.rear());   // 3
+console.log(cq.dequeue(), cq.enqueue(4)); // true true
+console.log(cq.front(), cq.rear()); // 2 4
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>38. Sliding Window Maximum</h3>
+    <div class="example"><b>Input:</b> nums = [1,3,-1,-3,5,3,6,7], k = 3
+<b>Output:</b> [3,3,5,5,6,7]</div>
+    <p class="approach"><b>Approach:</b> Monotonic deque of indices (decreasing values); front is always the window max. O(n).</p>
+    <script type="text/plain" class="solution">
+function maxSlidingWindow(nums, k) {
+  const deque = []; // stores indices, values decreasing
+  const res = [];
+  for (let i = 0; i < nums.length; i++) {
+    // remove indices outside window
+    if (deque.length && deque[0] <= i - k) deque.shift();
+    // maintain decreasing order
+    while (deque.length && nums[deque[deque.length - 1]] < nums[i]) deque.pop();
+    deque.push(i);
+    if (i >= k - 1) res.push(nums[deque[0]]);
+  }
+  return res;
+}
+
+console.log(maxSlidingWindow([1, 3, -1, -3, 5, 3, 6, 7], 3)); // [3, 3, 5, 5, 6, 7]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>39. Celebrity Problem</h3>
+    <div class="example"><b>Input:</b> Matrix M where M[i][j] = 1 means i knows j
+<b>Output:</b> Celebrity index (or -1)</div>
+    <p class="approach"><b>Approach:</b> Elimination — if candidate knows i, candidate can't be celebrity. Verify at the end. O(n).</p>
+    <script type="text/plain" class="solution">
+function findCelebrity(M) {
+  const n = M.length;
+  let cand = 0;
+  for (let i = 1; i < n; i++) if (M[cand][i] === 1) cand = i;
+
+  for (let i = 0; i < n; i++) {
+    if (i === cand) continue;
+    if (M[cand][i] === 1 || M[i][cand] === 0) return -1;
+  }
+  return cand;
+}
+
+console.log(findCelebrity([
+  [0, 1, 0],
+  [0, 0, 0],
+  [0, 1, 0],
+])); // 1
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>40. Largest Rectangle in Histogram</h3>
+    <div class="example"><b>Input:</b> [2,1,5,6,2,3]
+<b>Output:</b> 10</div>
+    <p class="approach"><b>Approach:</b> Monotonic increasing stack of indices; when a shorter bar arrives, pop and compute areas. O(n).</p>
+    <script type="text/plain" class="solution">
+function largestRectangleArea(heights) {
+  const stack = [];
+  let maxArea = 0;
+  for (let i = 0; i <= heights.length; i++) {
+    const h = i === heights.length ? 0 : heights[i];
+    while (stack.length && heights[stack[stack.length - 1]] >= h) {
+      const height = heights[stack.pop()];
+      const width = stack.length ? i - stack[stack.length - 1] - 1 : i;
+      maxArea = Math.max(maxArea, height * width);
+    }
+    stack.push(i);
+  }
+  return maxArea;
+}
+
+console.log(largestRectangleArea([2, 1, 5, 6, 2, 3])); // 10
+    </script>
+  </div>
+</section>
+
+<!-- ===================================================== TREES -->
+<section id="trees">
+  <h2>6. Binary Tree and BST Problems <span class="tag">uses TreeNode / buildTree helpers</span></h2>
+
+  <div class="problem">
+    <h3>41. Inorder, Preorder, Postorder Traversals</h3>
+    <div class="example"><b>Input:</b> Binary Tree [1,2,3,4,5]
+<b>Output:</b> Inorder [4,2,5,1,3], Preorder [1,2,4,5,3], Postorder [4,5,2,3,1]</div>
+    <script type="text/plain" class="solution">
+function inorder(root, out = []) {
+  if (!root) return out;
+  inorder(root.left, out); out.push(root.val); inorder(root.right, out);
+  return out;
+}
+function preorder(root, out = []) {
+  if (!root) return out;
+  out.push(root.val); preorder(root.left, out); preorder(root.right, out);
+  return out;
+}
+function postorder(root, out = []) {
+  if (!root) return out;
+  postorder(root.left, out); postorder(root.right, out); out.push(root.val);
+  return out;
+}
+
+// Iterative inorder (common interview follow-up)
+function inorderIterative(root) {
+  const out = [], stack = [];
+  let cur = root;
+  while (cur || stack.length) {
+    while (cur) { stack.push(cur); cur = cur.left; }
+    cur = stack.pop();
+    out.push(cur.val);
+    cur = cur.right;
+  }
+  return out;
+}
+
+const root = buildTree([1, 2, 3, 4, 5]);
+console.log(inorder(root));   // [4, 2, 5, 1, 3]
+console.log(preorder(root));  // [1, 2, 4, 5, 3]
+console.log(postorder(root)); // [4, 5, 2, 3, 1]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>42. Level Order Traversal</h3>
+    <div class="example"><b>Input:</b> [3,9,20,null,null,15,7]
+<b>Output:</b> [[3],[9,20],[15,7]]</div>
+    <script type="text/plain" class="solution">
+function levelOrder(root) {
+  if (!root) return [];
+  const res = [], queue = [root];
+  while (queue.length) {
+    const size = queue.length, level = [];
+    for (let i = 0; i < size; i++) {
+      const node = queue.shift();
+      level.push(node.val);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+    res.push(level);
+  }
+  return res;
+}
+
+console.log(levelOrder(buildTree([3, 9, 20, null, null, 15, 7]))); // [[3],[9,20],[15,7]]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>43. Diameter of a Binary Tree</h3>
+    <div class="example"><b>Input:</b> [1,2,3,4,5]
+<b>Output:</b> 3  (path 4-2-1-3 or 5-2-1-3, counted in edges)</div>
+    <p class="approach"><b>Approach:</b> Post-order DFS returning height; diameter through a node = leftHeight + rightHeight. O(n).</p>
+    <script type="text/plain" class="solution">
+function diameterOfBinaryTree(root) {
+  let diameter = 0;
+  function height(node) {
+    if (!node) return 0;
+    const l = height(node.left), r = height(node.right);
+    diameter = Math.max(diameter, l + r);
+    return 1 + Math.max(l, r);
+  }
+  height(root);
+  return diameter;
+}
+
+console.log(diameterOfBinaryTree(buildTree([1, 2, 3, 4, 5]))); // 3
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>44. Lowest Common Ancestor in a Binary Tree</h3>
+    <div class="example"><b>Input:</b> Binary Tree, Two Nodes
+<b>Output:</b> Lowest common ancestor</div>
+    <script type="text/plain" class="solution">
+function lowestCommonAncestor(root, p, q) {
+  if (!root || root.val === p || root.val === q) return root;
+  const left = lowestCommonAncestor(root.left, p, q);
+  const right = lowestCommonAncestor(root.right, p, q);
+  if (left && right) return root; // p and q in different subtrees
+  return left || right;
+}
+
+const t = buildTree([3, 5, 1, 6, 2, 0, 8, null, null, 7, 4]);
+console.log(lowestCommonAncestor(t, 5, 1).val); // 3
+console.log(lowestCommonAncestor(t, 5, 4).val); // 5
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>45. Validate a Binary Search Tree</h3>
+    <div class="example"><b>Input:</b> Binary Tree
+<b>Output:</b> true if it’s a BST</div>
+    <p class="approach"><b>Approach:</b> Pass allowed (min, max) range down the recursion. O(n).</p>
+    <script type="text/plain" class="solution">
+function isValidBST(root, min = -Infinity, max = Infinity) {
+  if (!root) return true;
+  if (root.val <= min || root.val >= max) return false;
+  return isValidBST(root.left, min, root.val) &&
+         isValidBST(root.right, root.val, max);
+}
+
+console.log(isValidBST(buildTree([2, 1, 3])));          // true
+console.log(isValidBST(buildTree([5, 1, 4, null, null, 3, 6]))); // false
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>46. Serialize and Deserialize a Binary Tree</h3>
+    <div class="example"><b>Input:</b> Binary Tree
+<b>Output:</b> Serialized string & reconstructed tree</div>
+    <p class="approach"><b>Approach:</b> Pre-order with '#' markers for null children; rebuild recursively in the same order.</p>
+    <script type="text/plain" class="solution">
+function serialize(root) {
+  const out = [];
+  (function dfs(node) {
+    if (!node) { out.push('#'); return; }
+    out.push(node.val);
+    dfs(node.left);
+    dfs(node.right);
+  })(root);
+  return out.join(',');
+}
+
+function deserialize(data) {
+  const vals = data.split(',');
+  let i = 0;
+  function build() {
+    if (vals[i] === '#') { i++; return null; }
+    const node = new TreeNode(Number(vals[i++]));
+    node.left = build();
+    node.right = build();
+    return node;
+  }
+  return build();
+}
+
+const s = serialize(buildTree([1, 2, 3, null, null, 4, 5]));
+console.log(s); // "1,2,#,#,3,4,#,#,5,#,#"
+console.log(serialize(deserialize(s)) === s); // true
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>47. Zigzag Level Order Traversal</h3>
+    <div class="example"><b>Input:</b> [3,9,20,null,null,15,7]
+<b>Output:</b> [[3],[20,9],[15,7]]</div>
+    <script type="text/plain" class="solution">
+function zigzagLevelOrder(root) {
+  if (!root) return [];
+  const res = [], queue = [root];
+  let leftToRight = true;
+  while (queue.length) {
+    const size = queue.length, level = new Array(size);
+    for (let i = 0; i < size; i++) {
+      const node = queue.shift();
+      level[leftToRight ? i : size - 1 - i] = node.val;
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+    res.push(level);
+    leftToRight = !leftToRight;
+  }
+  return res;
+}
+
+console.log(zigzagLevelOrder(buildTree([3, 9, 20, null, null, 15, 7]))); // [[3],[20,9],[15,7]]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>48. Kth Smallest Element in a BST</h3>
+    <div class="example"><b>Input:</b> BST [5,3,6,2,4,null,null,1], k = 3
+<b>Output:</b> 3</div>
+    <p class="approach"><b>Approach:</b> Iterative inorder traversal (ascending order), stop at the k-th visited node.</p>
+    <script type="text/plain" class="solution">
+function kthSmallest(root, k) {
+  const stack = [];
+  let cur = root;
+  while (cur || stack.length) {
+    while (cur) { stack.push(cur); cur = cur.left; }
+    cur = stack.pop();
+    if (--k === 0) return cur.val;
+    cur = cur.right;
+  }
+  return null;
+}
+
+console.log(kthSmallest(buildTree([5, 3, 6, 2, 4, null, null, 1]), 3)); // 3
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>49. Maximum Path Sum in a Binary Tree</h3>
+    <div class="example"><b>Input:</b> [-10,9,20,null,null,15,7]
+<b>Output:</b> 42  (15 + 20 + 7)</div>
+    <p class="approach"><b>Approach:</b> Post-order; each node returns the best downward gain (ignoring negatives) while updating a global max with left + node + right.</p>
+    <script type="text/plain" class="solution">
+function maxPathSum(root) {
+  let best = -Infinity;
+  function gain(node) {
+    if (!node) return 0;
+    const left = Math.max(0, gain(node.left));
+    const right = Math.max(0, gain(node.right));
+    best = Math.max(best, node.val + left + right);
+    return node.val + Math.max(left, right);
+  }
+  gain(root);
+  return best;
+}
+
+console.log(maxPathSum(buildTree([-10, 9, 20, null, null, 15, 7]))); // 42
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>50. Construct a Binary Tree from Preorder and Inorder Traversal</h3>
+    <div class="example"><b>Input:</b> preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+<b>Output:</b> Tree [3,9,20,null,null,15,7]</div>
+    <p class="approach"><b>Approach:</b> Preorder gives roots in order; a hash map of inorder indices splits left/right subtrees in O(1). O(n).</p>
+    <script type="text/plain" class="solution">
+function buildTreeFromPreIn(preorder, inorder) {
+  const idx = new Map();
+  inorder.forEach((v, i) => idx.set(v, i));
+  let pre = 0;
+
+  function build(lo, hi) {
+    if (lo > hi) return null;
+    const val = preorder[pre++];
+    const node = new TreeNode(val);
+    const mid = idx.get(val);
+    node.left = build(lo, mid - 1);
+    node.right = build(mid + 1, hi);
+    return node;
+  }
+  return build(0, inorder.length - 1);
+}
+
+const tree = buildTreeFromPreIn([3, 9, 20, 15, 7], [9, 3, 15, 20, 7]);
+console.log(levelOrder(tree)); // [[3],[9,20],[15,7]]
+    </script>
+  </div>
+</section>
+
+<!-- ===================================================== GRAPHS -->
+<section id="graphs">
+  <h2>7. Graph Problems <span class="tag">adjacency list: adj[u] = [v, ...]</span></h2>
+
+  <div class="problem">
+    <h3>1. Breadth-First Search (BFS)</h3>
+    <div class="example"><b>Input:</b> Graph and a starting node
+<b>Output:</b> BFS traversal</div>
+    <script type="text/plain" class="solution">
+function bfs(adj, start) {
+  const visited = new Array(adj.length).fill(false);
+  const order = [], queue = [start];
+  visited[start] = true;
+  while (queue.length) {
+    const u = queue.shift();
+    order.push(u);
+    for (const v of adj[u]) {
+      if (!visited[v]) { visited[v] = true; queue.push(v); }
+    }
+  }
+  return order;
+}
+
+const graph = [[1, 2], [0, 3, 4], [0, 4], [1, 5], [1, 2, 5], [3, 4]];
+console.log(bfs(graph, 0)); // [0, 1, 2, 3, 4, 5]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>2. Depth-First Search (DFS)</h3>
+    <div class="example"><b>Input:</b> Graph and a starting node
+<b>Output:</b> DFS traversal</div>
+    <script type="text/plain" class="solution">
+function dfs(adj, start) {
+  const visited = new Array(adj.length).fill(false);
+  const order = [];
+  (function visit(u) {
+    visited[u] = true;
+    order.push(u);
+    for (const v of adj[u]) if (!visited[v]) visit(v);
+  })(start);
+  return order;
+}
+
+// Iterative version
+function dfsIterative(adj, start) {
+  const visited = new Set(), order = [], stack = [start];
+  while (stack.length) {
+    const u = stack.pop();
+    if (visited.has(u)) continue;
+    visited.add(u);
+    order.push(u);
+    for (let i = adj[u].length - 1; i >= 0; i--) stack.push(adj[u][i]);
+  }
+  return order;
+}
+
+const graph = [[1, 2], [0, 3, 4], [0, 4], [1, 5], [1, 2, 5], [3, 4]];
+console.log(dfs(graph, 0));          // [0, 1, 3, 5, 4, 2]
+console.log(dfsIterative(graph, 0)); // [0, 1, 3, 5, 4, 2]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>3. Detect Cycle in a Directed Graph</h3>
+    <div class="example"><b>Input:</b> Directed graph
+<b>Output:</b> true/false if cycle exists</div>
+    <p class="approach"><b>Approach:</b> DFS with 3 colors (white/gray/black). A back-edge to a gray node = cycle.</p>
+    <script type="text/plain" class="solution">
+function hasCycleDirected(adj) {
+  const WHITE = 0, GRAY = 1, BLACK = 2;
+  const color = new Array(adj.length).fill(WHITE);
+
+  function dfs(u) {
+    color[u] = GRAY;
+    for (const v of adj[u]) {
+      if (color[v] === GRAY) return true;          // back edge
+      if (color[v] === WHITE && dfs(v)) return true;
+    }
+    color[u] = BLACK;
+    return false;
+  }
+
+  for (let i = 0; i < adj.length; i++)
+    if (color[i] === WHITE && dfs(i)) return true;
+  return false;
+}
+
+console.log(hasCycleDirected([[1], [2], [0]]));  // true  (0->1->2->0)
+console.log(hasCycleDirected([[1], [2], []]));   // false
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>4. Detect Cycle in an Undirected Graph</h3>
+    <div class="example"><b>Input:</b> Undirected graph
+<b>Output:</b> true/false if cycle exists</div>
+    <p class="approach"><b>Approach:</b> DFS tracking the parent; a visited neighbour that isn't the parent means a cycle.</p>
+    <script type="text/plain" class="solution">
+function hasCycleUndirected(adj) {
+  const visited = new Array(adj.length).fill(false);
+
+  function dfs(u, parent) {
+    visited[u] = true;
+    for (const v of adj[u]) {
+      if (!visited[v]) { if (dfs(v, u)) return true; }
+      else if (v !== parent) return true;
+    }
+    return false;
+  }
+
+  for (let i = 0; i < adj.length; i++)
+    if (!visited[i] && dfs(i, -1)) return true;
+  return false;
+}
+
+console.log(hasCycleUndirected([[1], [0, 2], [1, 3], [2, 0]].map(a => a)));  // true
+console.log(hasCycleUndirected([[1], [0, 2], [1]]));                          // false
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>5. Dijkstra’s Shortest Path Algorithm</h3>
+    <div class="example"><b>Input:</b> Weighted graph, source node
+<b>Output:</b> Shortest distances from source</div>
+    <p class="approach"><b>Approach:</b> Min-heap of (dist, node); relax edges lazily. O((V+E) log V). Uses <code>MinHeap</code> helper.</p>
+    <script type="text/plain" class="solution">
+// adj[u] = [[v, weight], ...]
+function dijkstra(adj, src) {
+  const n = adj.length;
+  const dist = new Array(n).fill(Infinity);
+  dist[src] = 0;
+  const pq = new MinHeap((a, b) => a[0] - b[0]);
+  pq.push([0, src]);
+
+  while (pq.size()) {
+    const [d, u] = pq.pop();
+    if (d > dist[u]) continue; // stale entry
+    for (const [v, w] of adj[u]) {
+      if (d + w < dist[v]) {
+        dist[v] = d + w;
+        pq.push([dist[v], v]);
+      }
+    }
+  }
+  return dist;
+}
+
+const wg = [
+  [[1, 4], [2, 1]],
+  [[3, 1]],
+  [[1, 2], [3, 5]],
+  [],
+];
+console.log(dijkstra(wg, 0)); // [0, 3, 1, 4]
+    </script>
+  </div>
+</section>
+
+<!-- ===================================================== DP -->
+<section id="dp">
+  <h2>8. Dynamic Programming Problems</h2>
+
+  <div class="problem">
+    <h3>1. 0/1 Knapsack Problem</h3>
+    <div class="example"><b>Input:</b> weights = [1,3,4,5], values = [1,4,5,7], capacity = 7
+<b>Output:</b> 9</div>
+    <p class="approach"><b>Approach:</b> 1-D DP over capacity iterated backwards so each item is used at most once. O(n·W).</p>
+    <script type="text/plain" class="solution">
+function knapsack(weights, values, capacity) {
+  const dp = new Array(capacity + 1).fill(0);
+  for (let i = 0; i < weights.length; i++) {
+    for (let w = capacity; w >= weights[i]; w--) {
+      dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]);
+    }
+  }
+  return dp[capacity];
+}
+
+console.log(knapsack([1, 3, 4, 5], [1, 4, 5, 7], 7)); // 9  (items 3 + 4)
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>2. Longest Increasing Subsequence</h3>
+    <div class="example"><b>Input:</b> [10,9,2,5,3,7,101,18]
+<b>Output:</b> 4  (2,3,7,101)</div>
+    <p class="approach"><b>Approach:</b> Patience sorting with binary search — <code>tails[i]</code> = smallest tail of an increasing subsequence of length i+1. O(n log n).</p>
+    <script type="text/plain" class="solution">
+function lengthOfLIS(nums) {
+  const tails = [];
+  for (const x of nums) {
+    let lo = 0, hi = tails.length;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (tails[mid] < x) lo = mid + 1; else hi = mid;
+    }
+    tails[lo] = x;
+  }
+  return tails.length;
+}
+
+// O(n^2) classic DP version
+function lengthOfLISDP(nums) {
+  const dp = new Array(nums.length).fill(1);
+  for (let i = 1; i < nums.length; i++)
+    for (let j = 0; j < i; j++)
+      if (nums[j] < nums[i]) dp[i] = Math.max(dp[i], dp[j] + 1);
+  return Math.max(0, ...dp);
+}
+
+console.log(lengthOfLIS([10, 9, 2, 5, 3, 7, 101, 18]));   // 4
+console.log(lengthOfLISDP([10, 9, 2, 5, 3, 7, 101, 18])); // 4
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>3. Longest Common Subsequence</h3>
+    <div class="example"><b>Input:</b> "abcde", "ace"
+<b>Output:</b> "ace"  (length 3)</div>
+    <script type="text/plain" class="solution">
+function longestCommonSubsequence(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+  for (let i = 1; i <= m; i++)
+    for (let j = 1; j <= n; j++)
+      dp[i][j] = a[i - 1] === b[j - 1]
+        ? dp[i - 1][j - 1] + 1
+        : Math.max(dp[i - 1][j], dp[i][j - 1]);
+
+  // reconstruct
+  let i = m, j = n, res = '';
+  while (i > 0 && j > 0) {
+    if (a[i - 1] === b[j - 1]) { res = a[i - 1] + res; i--; j--; }
+    else if (dp[i - 1][j] >= dp[i][j - 1]) i--;
+    else j--;
+  }
+  return { length: dp[m][n], subsequence: res };
+}
+
+console.log(longestCommonSubsequence("abcde", "ace")); // { length: 3, subsequence: 'ace' }
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>4. Edit Distance</h3>
+    <div class="example"><b>Input:</b> "horse", "ros"
+<b>Output:</b> 3</div>
+    <p class="approach"><b>Approach:</b> dp[i][j] = min operations to convert first i chars of word1 to first j chars of word2 (insert / delete / replace). O(m·n).</p>
+    <script type="text/plain" class="solution">
+function minDistance(word1, word2) {
+  const m = word1.length, n = word2.length;
+  const dp = Array.from({ length: m + 1 }, (_, i) => {
+    const row = new Array(n + 1).fill(0);
+    row[0] = i;
+    return row;
+  });
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (word1[i - 1] === word2[j - 1]) dp[i][j] = dp[i - 1][j - 1];
+      else dp[i][j] = 1 + Math.min(
+        dp[i - 1][j],     // delete
+        dp[i][j - 1],     // insert
+        dp[i - 1][j - 1]  // replace
+      );
+    }
+  }
+  return dp[m][n];
+}
+
+console.log(minDistance("horse", "ros")); // 3
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>5. Partition Equal Subset Sum</h3>
+    <div class="example"><b>Input:</b> [1,5,11,5]
+<b>Output:</b> true  ([1,5,5] and [11])</div>
+    <p class="approach"><b>Approach:</b> Subset-sum DP for target = total/2 using a boolean array. O(n·sum).</p>
+    <script type="text/plain" class="solution">
+function canPartition(nums) {
+  const total = nums.reduce((a, b) => a + b, 0);
+  if (total % 2 !== 0) return false;
+  const target = total / 2;
+  const dp = new Array(target + 1).fill(false);
+  dp[0] = true;
+  for (const num of nums) {
+    for (let s = target; s >= num; s--) {
+      if (dp[s - num]) dp[s] = true;
+    }
+  }
+  return dp[target];
+}
+
+console.log(canPartition([1, 5, 11, 5])); // true
+console.log(canPartition([1, 2, 3, 5]));  // false
+    </script>
+  </div>
+</section>
+
+<!-- ===================================================== SEARCH & SORT -->
+<section id="sorting">
+  <h2>9. Searching and Sorting Problems</h2>
+
+  <div class="problem">
+    <h3>1. Binary Search</h3>
+    <div class="example"><b>Input:</b> arr = [1, 3, 5, 7, 9], target = 5
+<b>Output:</b> 2</div>
+    <script type="text/plain" class="solution">
+function binarySearch(arr, target) {
+  let lo = 0, hi = arr.length - 1;
+  while (lo <= hi) {
+    const mid = lo + ((hi - lo) >> 1);
+    if (arr[mid] === target) return mid;
+    if (arr[mid] < target) lo = mid + 1;
+    else hi = mid - 1;
+  }
+  return -1;
+}
+
+console.log(binarySearch([1, 3, 5, 7, 9], 5)); // 2
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>2. Merge Sort</h3>
+    <div class="example"><b>Input:</b> [5, 2, 9, 1, 5, 6]
+<b>Output:</b> [1, 2, 5, 5, 6, 9]</div>
+    <script type="text/plain" class="solution">
+function mergeSort(arr) {
+  if (arr.length <= 1) return arr;
+  const mid = arr.length >> 1;
+  const left = mergeSort(arr.slice(0, mid));
+  const right = mergeSort(arr.slice(mid));
+  const out = [];
+  let i = 0, j = 0;
+  while (i < left.length && j < right.length)
+    out.push(left[i] <= right[j] ? left[i++] : right[j++]);
+  return out.concat(left.slice(i), right.slice(j));
+}
+
+console.log(mergeSort([5, 2, 9, 1, 5, 6])); // [1, 2, 5, 5, 6, 9]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>3. Quick Sort</h3>
+    <div class="example"><b>Input:</b> [10, 7, 8, 9, 1, 5]
+<b>Output:</b> [1, 5, 7, 8, 9, 10]</div>
+    <script type="text/plain" class="solution">
+function quickSort(arr, lo = 0, hi = arr.length - 1) {
+  if (lo < hi) {
+    const p = partition(arr, lo, hi);
+    quickSort(arr, lo, p - 1);
+    quickSort(arr, p + 1, hi);
+  }
+  return arr;
+}
+
+function partition(arr, lo, hi) {
+  const pivot = arr[hi]; // Lomuto partition
+  let i = lo - 1;
+  for (let j = lo; j < hi; j++) {
+    if (arr[j] < pivot) { i++; [arr[i], arr[j]] = [arr[j], arr[i]]; }
+  }
+  [arr[i + 1], arr[hi]] = [arr[hi], arr[i + 1]];
+  return i + 1;
+}
+
+console.log(quickSort([10, 7, 8, 9, 1, 5])); // [1, 5, 7, 8, 9, 10]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>4. Find First and Last Position of an Element in a Sorted Array</h3>
+    <div class="example"><b>Input:</b> nums = [5,7,7,8,8,10], target = 8
+<b>Output:</b> [3,4]</div>
+    <p class="approach"><b>Approach:</b> Two binary searches — lower bound and upper bound. O(log n).</p>
+    <script type="text/plain" class="solution">
+function searchRange(nums, target) {
+  const bound = (findFirst) => {
+    let lo = 0, hi = nums.length - 1, res = -1;
+    while (lo <= hi) {
+      const mid = (lo + hi) >> 1;
+      if (nums[mid] === target) {
+        res = mid;
+        if (findFirst) hi = mid - 1; else lo = mid + 1;
+      } else if (nums[mid] < target) lo = mid + 1;
+      else hi = mid - 1;
+    }
+    return res;
+  };
+  return [bound(true), bound(false)];
+}
+
+console.log(searchRange([5, 7, 7, 8, 8, 10], 8)); // [3, 4]
+console.log(searchRange([5, 7, 7, 8, 8, 10], 6)); // [-1, -1]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>5. Kth Smallest Element</h3>
+    <div class="example"><b>Input:</b> arr = [7, 10, 4, 3, 20, 15], k = 3
+<b>Output:</b> 7</div>
+    <p class="approach"><b>Approach:</b> QuickSelect — average O(n). (Alternative: max-heap of size k.)</p>
+    <script type="text/plain" class="solution">
+function kthSmallest(arr, k) {
+  const a = [...arr];
+  let lo = 0, hi = a.length - 1, target = k - 1;
+  while (lo <= hi) {
+    // random pivot to avoid worst case
+    const r = lo + Math.floor(Math.random() * (hi - lo + 1));
+    [a[r], a[hi]] = [a[hi], a[r]];
+    const pivot = a[hi];
+    let i = lo;
+    for (let j = lo; j < hi; j++)
+      if (a[j] < pivot) { [a[i], a[j]] = [a[j], a[i]]; i++; }
+    [a[i], a[hi]] = [a[hi], a[i]];
+
+    if (i === target) return a[i];
+    if (i < target) lo = i + 1; else hi = i - 1;
+  }
+  return -1;
+}
+
+console.log(kthSmallest([7, 10, 4, 3, 20, 15], 3)); // 7
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>6. Search in Rotated Sorted Array</h3>
+    <div class="example"><b>Input:</b> nums = [4,5,6,7,0,1,2], target = 0
+<b>Output:</b> 4</div>
+    <p class="approach"><b>Approach:</b> Modified binary search: one half is always sorted; check if target lies in it. O(log n).</p>
+    <script type="text/plain" class="solution">
+function searchRotated(nums, target) {
+  let lo = 0, hi = nums.length - 1;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    if (nums[mid] === target) return mid;
+    if (nums[lo] <= nums[mid]) { // left half sorted
+      if (nums[lo] <= target && target < nums[mid]) hi = mid - 1;
+      else lo = mid + 1;
+    } else { // right half sorted
+      if (nums[mid] < target && target <= nums[hi]) lo = mid + 1;
+      else hi = mid - 1;
+    }
+  }
+  return -1;
+}
+
+console.log(searchRotated([4, 5, 6, 7, 0, 1, 2], 0)); // 4
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>7. Count Inversions in an Array</h3>
+    <div class="example"><b>Input:</b> [8, 4, 2, 1]
+<b>Output:</b> 6</div>
+    <p class="approach"><b>Approach:</b> Merge sort; when taking from the right half, every remaining left element forms an inversion. O(n log n).</p>
+    <script type="text/plain" class="solution">
+function countInversions(arr) {
+  let count = 0;
+  function sort(a) {
+    if (a.length <= 1) return a;
+    const mid = a.length >> 1;
+    const left = sort(a.slice(0, mid)), right = sort(a.slice(mid));
+    const merged = [];
+    let i = 0, j = 0;
+    while (i < left.length && j < right.length) {
+      if (left[i] <= right[j]) merged.push(left[i++]);
+      else { merged.push(right[j++]); count += left.length - i; }
+    }
+    return merged.concat(left.slice(i), right.slice(j));
+  }
+  sort(arr);
+  return count;
+}
+
+console.log(countInversions([8, 4, 2, 1])); // 6
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>8. Heap Sort</h3>
+    <div class="example"><b>Input:</b> [12, 11, 13, 5, 6, 7]
+<b>Output:</b> [5, 6, 7, 11, 12, 13]</div>
+    <script type="text/plain" class="solution">
+function heapSort(arr) {
+  const n = arr.length;
+  const heapify = (size, i) => {
+    let largest = i;
+    const l = 2 * i + 1, r = 2 * i + 2;
+    if (l < size && arr[l] > arr[largest]) largest = l;
+    if (r < size && arr[r] > arr[largest]) largest = r;
+    if (largest !== i) {
+      [arr[i], arr[largest]] = [arr[largest], arr[i]];
+      heapify(size, largest);
+    }
+  };
+  // build max-heap
+  for (let i = (n >> 1) - 1; i >= 0; i--) heapify(n, i);
+  // extract max one by one
+  for (let end = n - 1; end > 0; end--) {
+    [arr[0], arr[end]] = [arr[end], arr[0]];
+    heapify(end, 0);
+  }
+  return arr;
+}
+
+console.log(heapSort([12, 11, 13, 5, 6, 7])); // [5, 6, 7, 11, 12, 13]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>9. Counting Sort</h3>
+    <div class="example"><b>Input:</b> [4, 2, 2, 8, 3, 3, 1]
+<b>Output:</b> [1, 2, 2, 3, 3, 4, 8]</div>
+    <script type="text/plain" class="solution">
+function countingSort(arr) {
+  if (!arr.length) return arr;
+  const max = Math.max(...arr), min = Math.min(...arr);
+  const count = new Array(max - min + 1).fill(0);
+  for (const x of arr) count[x - min]++;
+
+  // prefix sums for stable placement
+  for (let i = 1; i < count.length; i++) count[i] += count[i - 1];
+
+  const out = new Array(arr.length);
+  for (let i = arr.length - 1; i >= 0; i--) out[--count[arr[i] - min]] = arr[i];
+  return out;
+}
+
+console.log(countingSort([4, 2, 2, 8, 3, 3, 1])); // [1, 2, 2, 3, 3, 4, 8]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>10. Radix Sort</h3>
+    <div class="example"><b>Input:</b> [170, 45, 75, 90, 802, 24, 2, 66]
+<b>Output:</b> [2, 24, 45, 66, 75, 90, 170, 802]</div>
+    <p class="approach"><b>Approach:</b> Stable counting sort per digit, least significant digit first. O(d·(n + 10)).</p>
+    <script type="text/plain" class="solution">
+function radixSort(arr) {
+  const max = Math.max(...arr);
+  for (let exp = 1; Math.floor(max / exp) > 0; exp *= 10) {
+    const out = new Array(arr.length), count = new Array(10).fill(0);
+    for (const x of arr) count[Math.floor(x / exp) % 10]++;
+    for (let i = 1; i < 10; i++) count[i] += count[i - 1];
+    for (let i = arr.length - 1; i >= 0; i--) {
+      const d = Math.floor(arr[i] / exp) % 10;
+      out[--count[d]] = arr[i];
+    }
+    arr = out;
+  }
+  return arr;
+}
+
+console.log(radixSort([170, 45, 75, 90, 802, 24, 2, 66])); // [2, 24, 45, 66, 75, 90, 170, 802]
+    </script>
+  </div>
+</section>
+
+<!-- ===================================================== BACKTRACKING -->
+<section id="backtracking">
+  <h2>10. Backtracking Problems</h2>
+
+  <div class="problem">
+    <h3>1. N-Queens Problem</h3>
+    <div class="example"><b>Input:</b> n = 4
+<b>Output:</b> All arrangements of 4 queens on a 4x4 chessboard (2 solutions)</div>
+    <p class="approach"><b>Approach:</b> Place one queen per row; use sets for columns and both diagonals for O(1) conflict checks.</p>
+    <script type="text/plain" class="solution">
+function solveNQueens(n) {
+  const results = [];
+  const cols = new Set(), diag1 = new Set(), diag2 = new Set();
+  const board = Array.from({ length: n }, () => new Array(n).fill('.'));
+
+  function place(row) {
+    if (row === n) { results.push(board.map(r => r.join(''))); return; }
+    for (let c = 0; c < n; c++) {
+      if (cols.has(c) || diag1.has(row - c) || diag2.has(row + c)) continue;
+      cols.add(c); diag1.add(row - c); diag2.add(row + c);
+      board[row][c] = 'Q';
+      place(row + 1);
+      board[row][c] = '.';
+      cols.delete(c); diag1.delete(row - c); diag2.delete(row + c);
+    }
+  }
+  place(0);
+  return results;
+}
+
+console.log(solveNQueens(4));
+// [ [".Q..","...Q","Q...","..Q."], ["..Q.","Q...","...Q",".Q.."] ]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>2. Sudoku Solver</h3>
+    <div class="example"><b>Input:</b> Partially filled 9x9 board (0 = empty)
+<b>Output:</b> Completed board</div>
+    <script type="text/plain" class="solution">
+function solveSudoku(board) {
+  const isValid = (r, c, d) => {
+    for (let i = 0; i < 9; i++) {
+      if (board[r][i] === d || board[i][c] === d) return false;
+      const br = 3 * Math.floor(r / 3) + Math.floor(i / 3);
+      const bc = 3 * Math.floor(c / 3) + (i % 3);
+      if (board[br][bc] === d) return false;
+    }
+    return true;
+  };
+
+  function solve() {
+    for (let r = 0; r < 9; r++) {
+      for (let c = 0; c < 9; c++) {
+        if (board[r][c] !== 0) continue;
+        for (let d = 1; d <= 9; d++) {
+          if (isValid(r, c, d)) {
+            board[r][c] = d;
+            if (solve()) return true;
+            board[r][c] = 0;
+          }
+        }
+        return false; // no digit fits here
+      }
+    }
+    return true; // no empty cell left
+  }
+  solve();
+  return board;
+}
+
+const puzzle = [
+  [5,3,0,0,7,0,0,0,0],
+  [6,0,0,1,9,5,0,0,0],
+  [0,9,8,0,0,0,0,6,0],
+  [8,0,0,0,6,0,0,0,3],
+  [4,0,0,8,0,3,0,0,1],
+  [7,0,0,0,2,0,0,0,6],
+  [0,6,0,0,0,0,2,8,0],
+  [0,0,0,4,1,9,0,0,5],
+  [0,0,0,0,8,0,0,7,9],
+];
+console.log(solveSudoku(puzzle).map(r => r.join(' ')).join('\n'));
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>3. Word Search</h3>
+    <div class="example"><b>Input:</b> board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+<b>Output:</b> true</div>
+    <script type="text/plain" class="solution">
+function exist(board, word) {
+  const rows = board.length, cols = board[0].length;
+
+  function dfs(r, c, i) {
+    if (i === word.length) return true;
+    if (r < 0 || c < 0 || r >= rows || c >= cols || board[r][c] !== word[i]) return false;
+    const tmp = board[r][c];
+    board[r][c] = '#'; // mark visited
+    const found = dfs(r + 1, c, i + 1) || dfs(r - 1, c, i + 1) ||
+                  dfs(r, c + 1, i + 1) || dfs(r, c - 1, i + 1);
+    board[r][c] = tmp; // backtrack
+    return found;
+  }
+
+  for (let r = 0; r < rows; r++)
+    for (let c = 0; c < cols; c++)
+      if (dfs(r, c, 0)) return true;
+  return false;
+}
+
+const board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]];
+console.log(exist(board, "ABCCED")); // true
+console.log(exist(board, "ABCB"));   // false
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>4. Permutations of a String</h3>
+    <div class="example"><b>Input:</b> "ABC"
+<b>Output:</b> ["ABC", "ACB", "BAC", "BCA", "CAB", "CBA"]</div>
+    <script type="text/plain" class="solution">
+function permutations(str) {
+  const res = [], chars = str.split(''), used = new Array(chars.length).fill(false);
+
+  function backtrack(path) {
+    if (path.length === chars.length) { res.push(path.join('')); return; }
+    for (let i = 0; i < chars.length; i++) {
+      if (used[i]) continue;
+      used[i] = true; path.push(chars[i]);
+      backtrack(path);
+      path.pop(); used[i] = false;
+    }
+  }
+  backtrack([]);
+  return res;
+}
+
+console.log(permutations("ABC")); // ["ABC","ACB","BAC","BCA","CAB","CBA"]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>5. Subsets</h3>
+    <div class="example"><b>Input:</b> nums = [1,2,3]
+<b>Output:</b> [[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]</div>
+    <script type="text/plain" class="solution">
+function subsets(nums) {
+  const res = [];
+  function backtrack(start, path) {
+    res.push([...path]);
+    for (let i = start; i < nums.length; i++) {
+      path.push(nums[i]);
+      backtrack(i + 1, path);
+      path.pop();
+    }
+  }
+  backtrack(0, []);
+  return res;
+}
+
+// Bitmask alternative
+const subsetsBitmask = nums =>
+  Array.from({ length: 1 << nums.length }, (_, mask) => nums.filter((_, i) => mask & (1 << i)));
+
+console.log(subsets([1, 2, 3]));
+// [[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>6. Combination Sum</h3>
+    <div class="example"><b>Input:</b> candidates = [2,3,6,7], target = 7
+<b>Output:</b> [[2,2,3],[7]]</div>
+    <script type="text/plain" class="solution">
+function combinationSum(candidates, target) {
+  const res = [];
+  candidates.sort((a, b) => a - b);
+  function backtrack(start, remaining, path) {
+    if (remaining === 0) { res.push([...path]); return; }
+    for (let i = start; i < candidates.length; i++) {
+      if (candidates[i] > remaining) break; // pruning
+      path.push(candidates[i]);
+      backtrack(i, remaining - candidates[i], path); // reuse allowed → i, not i+1
+      path.pop();
+    }
+  }
+  backtrack(0, target, []);
+  return res;
+}
+
+console.log(combinationSum([2, 3, 6, 7], 7)); // [[2,2,3],[7]]
+    </script>
+  </div>
+
+  <div class="problem">
+    <h3>7. Rat in a Maze</h3>
+    <div class="example"><b>Input:</b> Maze grid (1 = open, 0 = blocked), start (0,0), end (n-1,n-1)
+<b>Output:</b> All possible paths as move strings (D,L,R,U)</div>
+    <script type="text/plain" class="solution">
+    </script>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('.problem').forEach(problem => {
+    const solution = problem.querySelector('.solution');
+    if (!solution) return;
+
+    const buttonRow = document.createElement('div');
+    buttonRow.className = 'btns';
+
+    const toggleButton = document.createElement('button');
+    toggleButton.type = 'button';
+    toggleButton.textContent = 'Show Solution';
+
+    const codeBlock = document.createElement('pre');
+    codeBlock.className = 'hidden';
+    const code = document.createElement('code');
+    code.className = 'language-javascript';
+    code.textContent = solution.textContent.trim();
+    codeBlock.appendChild(code);
+
+    solution.remove();
+    buttonRow.appendChild(toggleButton);
+    problem.append(buttonRow, codeBlock);
+
+    toggleButton.addEventListener('click', () => {
+      const isHidden = codeBlock.classList.toggle('hidden');
+      toggleButton.textContent = isHidden ? 'Show Solution' : 'Hide Solution';
+      if (!isHidden && !code.dataset.highlighted) {
+        hljs.highlightElement(code);
+        code.dataset.highlighted = 'true';
+      }
+    });
+  });
+
+  const search = document.querySelector('#search');
+  search.addEventListener('input', () => {
+    const query = search.value.toLowerCase();
+    document.querySelectorAll('.problem').forEach(problem => {
+      problem.hidden = !problem.textContent.toLowerCase().includes(query);
+    });
+  });
+</script>
+</body>
+</html>
