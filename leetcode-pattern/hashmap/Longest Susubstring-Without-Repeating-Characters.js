@@ -15,6 +15,8 @@ let isDuplicate = function(s){
 }
 
 
+console.log("12/09/2026")
+
 
 var lengthOfLongestSubstring = function(s) {
     let left = 0;
