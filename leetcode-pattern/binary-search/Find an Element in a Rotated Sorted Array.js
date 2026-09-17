@@ -24,7 +24,7 @@ function checkNuRotated1(arr) {
     }
   }
 
-  return start; // start === end === index of minimum
+  return start; 
 }
 
 function binarySearch(arr, start,end,target){
