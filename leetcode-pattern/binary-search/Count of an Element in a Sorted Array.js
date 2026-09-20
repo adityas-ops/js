@@ -4,7 +4,7 @@ let arr = [1,2,3,4,5,6,6,6,6,7,8,9,10]
 let target = 6;
 
 
- function checkOccurIndex(arr,isFirst){
+ function checkOccurIndex(arr,target,isFirst){
          let start = 0;
     let last = arr.length-1;
     let res = 0;
@@ -26,7 +26,7 @@ let target = 6;
 // first occur and last occur
 function countOccurence(arr, target){
    
-    return checkOccurIndex(arr,false)-checkOccurIndex(arr,true)+1;
+    return checkOccurIndex(arr,target,false)-checkOccurIndex(arr,target,true)+1;
 
 }
 

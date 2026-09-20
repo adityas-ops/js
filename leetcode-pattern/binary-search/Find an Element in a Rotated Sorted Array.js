@@ -43,7 +43,7 @@ function binarySearch(arr, start,end,target){
 function FindElement(arr,target){
     let idx = checkNuRotated1(arr)
     let firstHalf = binarySearch(arr,0,idx-1,target);
-    let secondHalf = binarySearch(arr,idx, arr.length, target)
+    let secondHalf = binarySearch(arr,idx, arr.length-1, target)
     return (firstHalf !== -1 && secondHalf === -1) ? firstHalf : (firstHalf === -1 && secondHalf !== -1) ? secondHalf : -1;
 }
 
