@@ -40,7 +40,6 @@ var setZeroes = function (matrix) {
       }
     }
   }
-console.log('zero',zeroIdx)
  while(zeroIdx.length >0){
     helper(matrix,zeroIdx[0]);
     zeroIdx.shift()
