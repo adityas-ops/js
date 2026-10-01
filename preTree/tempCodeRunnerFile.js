@@ -1,4 +1,3 @@
- while(zeroIdx.length >0){
-//     helper(matrix,zeroIdx[zeroIdx.length-1]);
-//     zeroIdx.pop()
-//  }
+    console.log('sum',sum)
+     console.log('sum-k',sum-k)
+     console.log('mpget',mp.get(sum-k))
