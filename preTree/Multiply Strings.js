@@ -22,4 +22,17 @@ var multiply = function(num1, num2) {
 };
 
 
+var multiply1 = function(num1, num2) {
+    let m = num1.length;
+    let n = num2.length;
+    let res = new Array(m+n).fill(0)
+    // console.log('rs',res)
+    for(let i = m-1; i>=0;i--){
+        for(let j = n-1; j>=0;j--){
+            
+        }
+    }
+}
+
 console.log(multiply(num1,num2));
+console.log(multiply1(num1,num2));
