@@ -1,5 +1,5 @@
 
-let num1 = "2", num2 = "3";
+let num1 = "12", num2 = "13";
 
 function convertDigit(s){
     let result = 0;
@@ -29,9 +29,20 @@ var multiply1 = function(num1, num2) {
     // console.log('rs',res)
     for(let i = m-1; i>=0;i--){
         for(let j = n-1; j>=0;j--){
-            
+             const d1 = num1.charCodeAt(i) - 48;
+            const d2 = num2.charCodeAt(j) - 48;
+            let sum = d1*d2+res[i+j+1];
+            res[i+j+1] = sum%10;
+            res[i+j] += Math.floor(sum/10)
+
         }
     }
+    // console.log("res",res)
+    // now remove extra zero
+     let k = 0;
+    while (k < res.length && res[k] === 0) k++;
+    // console.log("k",k)
+    return res.slice(k,res.length).join("")
 }
 
 console.log(multiply(num1,num2));
